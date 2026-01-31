@@ -160,9 +160,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 18040725}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4150fe55e53cb5e4987ba992d368754e, type: 3}
+  m_Script: {fileID: 11500000, guid: fdb8d991184746e42a7cdd07f1b0e161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AddingCardToMain
+  hand: {fileID: 690700128}
+  pool: {fileID: 1017098620}
+  maxCardInHand: 9
+  time: 1
 --- !u!4 &18040728
 Transform:
   m_ObjectHideFlags: 0
