@@ -8,6 +8,6 @@ public class CardDropArea : MonoBehaviour, IDropHandler
         CardDrag card = eventData.pointerDrag.GetComponent<CardDrag>();
         if (card == null) return;
 
-        Debug.Log("Carte déposée !");
+        Debug.Log(card.name + " déposée !");
     }
 }

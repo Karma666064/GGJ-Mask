@@ -48,6 +48,8 @@ public class CardHover : MonoBehaviour,
     {
         targetPos = basePos + Vector2.up * hoverLift;
         targetScale = baseScale * hoverScale;
+
+        Debug.Log(gameObject.name + " hover!");
     }
 
     public void OnPointerExit(PointerEventData eventData)

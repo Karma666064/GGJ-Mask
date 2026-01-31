@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
@@ -48,15 +49,13 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     {
         if (eventData.pointerEnter != null)
         {
-            CardDropArea dropArea =
-                eventData.pointerEnter.GetComponentInParent<CardDropArea>();
+            CardDropArea dropArea = eventData.pointerEnter.GetComponentInParent<CardDropArea>();
 
             if (dropArea != null)
             {
                 Destroy(gameObject);
 
-                returning = false;
-                return;
+                returning = true;
             }
         }
 
