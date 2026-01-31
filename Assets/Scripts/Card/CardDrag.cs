@@ -11,6 +11,8 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public float returnSpeed = 12f;
     bool returning;
 
+    int lastSiblingIndex;
+
     void Awake()
     {
         rect = GetComponent<RectTransform>();
@@ -32,12 +34,14 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             rect.anchoredPosition = startPos;
             returning = false;
         }
+
+        rect.SetSiblingIndex(lastSiblingIndex);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         startPos = rect.anchoredPosition;
-        rect.SetAsLastSibling(); // passe au-dessus des autres cartes
+        lastSiblingIndex = rect.GetSiblingIndex();
     }
 
     public void OnDrag(PointerEventData eventData)
