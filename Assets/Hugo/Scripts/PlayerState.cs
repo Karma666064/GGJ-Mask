@@ -24,7 +24,9 @@ public class PlayerState : MonoBehaviour
     {
         cardsCreator = GetComponent<CardsCreator>();
         decks = cardsCreator.CreateDeck();
+        cardsCreator.DEBUGPrintDeck(decks);
         DrawHand();
+        cardsCreator.DEBUGPrintDeck(decks);
         PlayerChangeMask(playerMask);
     }
 
@@ -32,14 +34,18 @@ public class PlayerState : MonoBehaviour
     {
         for (int i = 0; i < handStartSize; i++)
         {
-            hand.Add(ChooseRandomCardsInDeck());
+            if (decks.Count != 0)
+                ChooseRandomCardsInDeck();
+            else
+                return;
         }
     }
 
-    public Cards ChooseRandomCardsInDeck()
+    public void  ChooseRandomCardsInDeck()
     {
         int indexAleatoire = UnityEngine.Random.Range(0, decks.Count);
-        return decks[indexAleatoire];
+        hand.Add(decks[indexAleatoire]);
+        decks.Remove(decks[indexAleatoire]);
     }
 
     public void PlayerChangeMask(MaskState _mask)

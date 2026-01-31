@@ -29,9 +29,10 @@ public class CardsCreator : MonoBehaviour
         return deck;
     }
 
-    public void DEBUGPrintDeck()
+    public void DEBUGPrintDeck(List<Cards> _deck)
     {
-        foreach (var item in deck)
+        Debug.Log(deck.Count);
+        foreach (var item in _deck)
         {
             Debug.Log(item.currentName + "\n");
         }
