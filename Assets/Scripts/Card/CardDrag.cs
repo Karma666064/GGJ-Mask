@@ -42,6 +42,7 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     {
         startPos = rect.anchoredPosition;
         lastSiblingIndex = rect.GetSiblingIndex();
+
     }
 
     public void OnDrag(PointerEventData eventData)
