@@ -17,6 +17,7 @@ public class EnemyState : MonoBehaviour
     public MaskState nextMask;
     public EnemyAttack[] pattern;
     public EnemyAttack previewAttack;
+    public NegativeEffect debuff = NegativeEffect.none;
 
     public bool hasSpecial;
 
@@ -124,5 +125,6 @@ public class EnemyState : MonoBehaviour
         Debug.Log($"Current Shield : {shield}!");
         Debug.Log($"Current Mask : {mask}!");
         Debug.Log($"Current Power : {damage}!");
+        Debug.Log($"Current Debuff : {debuff}!");
     }
 }

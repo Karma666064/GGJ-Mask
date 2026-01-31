@@ -22,6 +22,13 @@ public enum CardEffect
     none
 }
 
+public enum NegativeEffect
+{
+    burn,
+    freeze,
+    none
+}
+
 public enum EnemyAttack
 {
     Attack,

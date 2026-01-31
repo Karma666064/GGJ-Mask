@@ -17,11 +17,11 @@ public class FightManager : MonoBehaviour
         enemy = GameObject.FindWithTag("Enemy").GetComponent<EnemyState>();
         deck = player.decks;
         hand = player.hand;
-        //UseCard(0);
+        
+        UseCard(0);
         EnemyPreviewAction();
         EnemyAction();
-
-
+        
     }
 
     public void EnemyPreviewAction()
@@ -75,6 +75,16 @@ public class FightManager : MonoBehaviour
         finalDamage = CalculateFinalDamage(hand[numberCardSelected].damage, player.playerMask, enemy.mask);
         enemy.health -= finalDamage;
 
+        if (hand[numberCardSelected].type == CardType.attack) 
+        {
+            if (player.playerMask == MaskState.angry)
+                enemy.debuff = NegativeEffect.burn;
+            if (player.playerMask == MaskState.sad)
+                enemy.debuff = NegativeEffect.freeze;
+        }
+
+        ApplyDebuffMaskEffect(hand[numberCardSelected]); 
+
         if (enemy.health <= 0)
             enemy.Die();
         
@@ -84,6 +94,17 @@ public class FightManager : MonoBehaviour
 
         hand.Remove(hand[numberCardSelected]);
         Debug.Log("Number Cards in Hand:" + hand.Count);
+    }
+
+    public void ApplyDebuffMaskEffect(Cards card)
+    {
+       if (card.type == CardType.attack) 
+        {
+            if (player.playerMask == MaskState.angry)
+                enemy.debuff = NegativeEffect.burn;
+            if (player.playerMask == MaskState.sad)
+                enemy.debuff = NegativeEffect.freeze;
+        } 
     }
 
     public int CalculateFinalDamage(int damage, MaskState maskAttack, MaskState maskDefense)
