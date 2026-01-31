@@ -6,8 +6,6 @@ public class ArcLayoutGroup : LayoutGroup
     [SerializeField] float radius = 300f;
     [SerializeField] float arcAngle = 40f;
 
-    [SerializeField] float offsetY;
-
     public override void CalculateLayoutInputVertical() {}
 
     public override void SetLayoutHorizontal()

@@ -261,7 +261,6 @@ MonoBehaviour:
   m_ChildAlignment: 4
   radius: 900
   arcAngle: 32
-  offsetY: 0
 --- !u!114 &690700130
 MonoBehaviour:
   m_ObjectHideFlags: 0
