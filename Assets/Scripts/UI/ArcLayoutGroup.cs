@@ -26,7 +26,7 @@ public class ArcLayoutGroup : LayoutGroup
         if (count == 0) return;
 
         float step = count > 1 ? arcAngle / (count - 1) : 0f;
-        float startAngle = -arcAngle / 2f;
+        float startAngle = -step * (count - 1) * 0.5f;
 
         for (int i = 0; i < count; i++)
         {
