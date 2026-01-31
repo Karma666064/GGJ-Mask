@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0eb8e4e42382434c9fcead5bd535079, type: 3}
+  m_Name: ShieldWeak
+  m_EditorClassIdentifier: Assembly-CSharp::CardSO
+  type: 1
+  mask: 3
+  currentSprite: {fileID: 0}
+  allSprites: {fileID: 0}
+  allNames:
+  - Shield Angry
+  - Shield Joy
+  - Shield Sad
+  currentName: 
+  currentDescription: Shield Angry  Description
+  allDescriptions:
+  - Shield Angry  Description
+  - Shield Joy Description
+  - Shield Sad Description
+  cost: 1
+  damage: 0
+  heal: 0
+  shield: 1
+  currentEffect: 3
+  allEffects: 000000000100000002000000
