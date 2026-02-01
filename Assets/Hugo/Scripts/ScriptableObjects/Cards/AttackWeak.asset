@@ -23,9 +23,9 @@ MonoBehaviour:
   currentName: 
   currentDescription: Attack Angry Description
   allDescriptions:
-  - Attack Angry Description
-  - Attack Joy Description
-  - Attack Sad Description
+  - Inflict 3 Damages and Burn.
+  - Inflict 1 Damages and Heal half the total damages.
+  - Inclict 2 Damages and Freeze.
   cost: 1
   damage: 1
   heal: 0

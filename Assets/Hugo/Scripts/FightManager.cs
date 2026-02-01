@@ -2,26 +2,73 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Collections;
+using Unity.VisualScripting;
+using UnityEngine.UIElements;
+using UnityEngine.UI;
+using TMPro;
 
 public class FightManager : MonoBehaviour
 {
     public PlayerState player;
     public EnemyState enemy;
     
-    private List<Cards> deck;
-    public List<Cards> hand;
+    private List<CardData> deck;
+    public List<CardData> hand;
     private int finalDamage;
+    public Turn activeTurn;
+    public static Action<bool> enableDragDrop;
+
+    private bool hasPlayCard = false;
+
+    private int turnCount = 3;
+
+    public UnityEngine.UI.Button renewButton;
+
+    public TextMeshProUGUI MaskTimer;
     void Start()
     {
         player = GameObject.FindWithTag("Player").GetComponent<PlayerState>();
         enemy = GameObject.FindWithTag("Enemy").GetComponent<EnemyState>();
-        deck = player.decks;
-        hand = player.hand;
-        
-        UseCard(0);
+        //deck = player.decks;
+        //hand = player.hand;
+
         EnemyPreviewAction();
-        EnemyAction();
-        
+        //EnemyAction();
+        CardDropArea.CardIsDropped += UseCard;
+        EnemyState.NextLevel += ChangeLevel;
+
+        StartCoroutine(WaitHand());
+    }
+
+    IEnumerator WaitHand()
+    {
+        yield return new WaitForSeconds(4f);
+        enableDragDrop?.Invoke(true);
+
+    }
+
+    public void ChangeLevel()
+    {
+        ForceRenewDeck();
+        player.PlayerGrowth();
+
+        turnCount = 3;
+        MaskTimer.text = "Turn Left: " + turnCount.ToString();
+        enemy.ChangeSO();
+        enableDragDrop?.Invoke(true);
+        activeTurn = Turn.player;
+    }
+
+    public void ChangeColorRenew(Color c)
+    {
+        ColorBlock cb = renewButton.colors;
+        cb.normalColor = c;
+        cb.highlightedColor = c;
+        cb.pressedColor = c;
+        cb.selectedColor = c;
+
+        renewButton.colors = cb;
+
     }
 
     public void EnemyPreviewAction()
@@ -35,9 +82,7 @@ public class FightManager : MonoBehaviour
         {
             case EnemyAttack.Attack:
                 finalDamage = CalculateFinalDamage(enemy.damage, enemy.mask, player.playerMask);
-                player.health -= finalDamage;
-                if (player.health <= 0)
-                    player.Die();
+                player.TakeDamage(finalDamage);
                 break;
             case EnemyAttack.Heal:
                 enemy.Heal();
@@ -55,48 +100,133 @@ public class FightManager : MonoBehaviour
                 break;
         }
 
-        enemy.DEBUGInfoEnnemy();
+        //enemy.DEBUGInfoEnnemy();
     }
 
 
-    public void UseCard(int numberCardSelected)
+    public void UseCard(int numberCardDataSelected)
     {
-        if (player.actionPoint - hand[numberCardSelected].cost < 0) {
-            Debug.Log("Can't Use This Card, not Enough AP!");
+        if (activeTurn == Turn.player) {
+            if (player.actionPoint - player.hand[numberCardDataSelected].cost < 0) {
+                Debug.Log("Can't Use This Card, not Enough AP!");
+                return;
+            }
+            else
+                player.actionPoint -= player.hand[numberCardDataSelected].cost;
+
+            player.health += player.hand[numberCardDataSelected].heal;
+            player.health = Math.Clamp(player.health, 0, player.maxHealth);
+            
+            player.shield += player.hand[numberCardDataSelected].shield;
+            
+            
+            
+            finalDamage = CalculateFinalDamage(player.hand[numberCardDataSelected].damage, player.playerMask, enemy.mask);
+            
+
+            if (player.hand[numberCardDataSelected].type == CardType.attack) 
+            {
+                if (player.playerMask == MaskState.angry)
+                    enemy.debuff = NegativeEffect.burn;
+                if (player.playerMask == MaskState.sad)
+                    enemy.debuff = NegativeEffect.freeze;
+            }
+
+            ApplyDebuffMaskEffect(player.hand[numberCardDataSelected]); 
+       
+            player.hand[numberCardDataSelected].transform.SetParent(player.deckPool.transform);
+            player.hand[numberCardDataSelected].transform.position = player.deckPool.transform.position;
+            player.discard.Add(player.hand[numberCardDataSelected]);
+            player.hand.Remove(player.hand[numberCardDataSelected]);
+            player.DEBUGPrintDiscard();
+            hasPlayCard = true;
+            ChangeColorRenew(Color.gray);
+            enemy.TakeDamage(finalDamage);
+            player.UpdateUI();
+        }
+    }
+
+    public void EndTurn()
+    {
+        if (activeTurn == Turn.player) {
+            enableDragDrop?.Invoke(false);
+            activeTurn = Turn.enemy;
+            StartCoroutine(EnemyTurn());
+        }
+    }
+
+    public void ForceRenewDeck()
+    {
+        enableDragDrop?.Invoke(false);
+        activeTurn = Turn.enemy;
+        StartCoroutine(ForceRenew());
+    }
+
+    public IEnumerator ForceRenew()
+    {
+        player.AddDiscardToDeck();
+        player.AddHandToDeck();
+        yield return StartCoroutine(player.DrawHand(player.handStartSize)); 
+    }
+
+    public void RenewDeck()
+    {
+        if (activeTurn == Turn.player && hasPlayCard == false) {
+            enableDragDrop?.Invoke(false);
+            activeTurn = Turn.enemy;
+            StartCoroutine(Renew());
+        }
+    }
+
+    public IEnumerator Renew()
+    {
+        player.AddDiscardToDeck();
+        player.AddHandToDeck();
+        yield return StartCoroutine(player.DrawHand(player.handStartSize - 2));
+        yield return StartCoroutine(EnemyTurn());
+    }
+
+    public IEnumerator EnemyTurn()
+    {
+        yield return new WaitForSeconds(1f);
+        EnemyAction();
+        Debug.Log("Enemy Action!!");
+        yield return new WaitForSeconds(1f);
+        enemy.ChoosePreviewAttack();
+        yield return StartCoroutine(player.DrawHand(2));
+        activeTurn = Turn.player;
+        hasPlayCard = false;
+        enableDragDrop?.Invoke(true);
+        ChangeColorRenew(Color.white);
+        player.actionPoint = player.actionPointMax;
+        player.UpdateUI();
+        TriggerRandomMaskChange();
+
+       
+        if (enemy.debuff == NegativeEffect.burn)
+        {
+            enemy.TakeDamage(2);
+        }
+
+        enemy.debuffRemainingTurn--;
+        if (enemy.debuffRemainingTurn <= 0)
+            enemy.debuff = NegativeEffect.none;
+    }
+
+    public void TriggerRandomMaskChange()
+    {
+        if (turnCount <= 1)
+        {
+            player.PlayerChangeMask(player.FindNewMask());
+            turnCount = 3;
+            MaskTimer.text = "Turn Left: " + turnCount.ToString();
             return;
         }
-        else
-            player.actionPoint -= hand[numberCardSelected].cost;
-        
-        player.health += hand[numberCardSelected].heal;
-        player.health = Math.Clamp(player.health, 0, player.maxHealth);
-        player.shield += hand[numberCardSelected].shield;
-
-        finalDamage = CalculateFinalDamage(hand[numberCardSelected].damage, player.playerMask, enemy.mask);
-        enemy.health -= finalDamage;
-
-        if (hand[numberCardSelected].type == CardType.attack) 
-        {
-            if (player.playerMask == MaskState.angry)
-                enemy.debuff = NegativeEffect.burn;
-            if (player.playerMask == MaskState.sad)
-                enemy.debuff = NegativeEffect.freeze;
-        }
-
-        ApplyDebuffMaskEffect(hand[numberCardSelected]); 
-
-        if (enemy.health <= 0)
-            enemy.Die();
-        
-        hand[numberCardSelected].DEBUGAllPrint();
-        Debug.Log("\n");
-        DEBUGPrintEffectCard(hand[numberCardSelected]);
-
-        hand.Remove(hand[numberCardSelected]);
-        Debug.Log("Number Cards in Hand:" + hand.Count);
+        turnCount--;
+        MaskTimer.text = "Turn Left: " + turnCount.ToString();
     }
 
-    public void ApplyDebuffMaskEffect(Cards card)
+    public void ApplyDebuffMaskEffect(CardData card)
     {
        if (card.type == CardType.attack) 
         {
@@ -104,6 +234,7 @@ public class FightManager : MonoBehaviour
                 enemy.debuff = NegativeEffect.burn;
             if (player.playerMask == MaskState.sad)
                 enemy.debuff = NegativeEffect.freeze;
+            enemy.debuffRemainingTurn = 2;
         } 
     }
 
@@ -157,7 +288,7 @@ public class FightManager : MonoBehaviour
         return damage;
     }
 
-    public void DEBUGPrintEffectCard(Cards card)
+    public void DEBUGPrintEffectCard(CardData card)
     {
         Debug.Log($"Card Name = {card.currentName}!");
         Debug.Log($"Remaining Action point {player.actionPoint}!");

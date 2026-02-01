@@ -414,6 +414,7 @@ MonoBehaviour:
   nextMask: 0
   pattern: 
   previewAttack: 0
+  debuff: 2
   hasSpecial: 0
 --- !u!4 &1184939488
 Transform:
@@ -446,7 +447,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1213969792
 MonoBehaviour:
   m_ObjectHideFlags: 0

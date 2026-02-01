@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MaskSO
   maskState: 1
   damageMultipler: 1
-  healMultiplier: 2
+  healMultiplier: 3
   shieldMultiplier: 2

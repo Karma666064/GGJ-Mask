@@ -37,3 +37,10 @@ public enum EnemyAttack
     StateChange,
     Special
 }
+
+public enum Turn
+{
+    player,
+    enemy,
+    none,
+}

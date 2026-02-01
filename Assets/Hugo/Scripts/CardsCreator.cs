@@ -9,27 +9,34 @@ public class CardsCreator : MonoBehaviour
     public AllCardsSO allCards;
     public AllMaskSO allMasks;
 
-    public List<Cards> deck;
+    public CardDropArea dropArea;
+
+    public List<CardData> deck;
+    public GameObject physicalCard;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public List<Cards> CreateDeck()
+    public List<CardData> CreateDeck()
     {
         for (int i = 0; i < allCards.Cards.Length; i++)
         {
             for (int j = 0; j < 2; j++) {
-                Cards newCard = gameObject.AddComponent<Cards>();
 
-                newCard.card = allCards.Cards[i];
-                newCard.allMask = allMasks;
-                newCard.mask = player.playerMask;
-                newCard.ChangeCardMask();
-                deck.Add(newCard);
+                GameObject wholecard = Instantiate(physicalCard, transform.position, Quaternion.identity, transform);
+
+                wholecard.GetComponent<CardDrag>().dropArea = dropArea;
+                
+                CardData newCardData = wholecard.AddComponent<CardData>();
+
+                newCardData.card = allCards.Cards[i];
+                newCardData.allMask = allMasks;
+                newCardData.mask = player.playerMask;
+                newCardData.ChangeCardMask();
+                deck.Add(newCardData);
             }
         }
-        
         return deck;
     }
 
-    public void DEBUGPrintDeck(List<Cards> _deck)
+    public void DEBUGPrintDeck(List<CardData> _deck)
     {
         Debug.Log(deck.Count);
         foreach (var item in _deck)

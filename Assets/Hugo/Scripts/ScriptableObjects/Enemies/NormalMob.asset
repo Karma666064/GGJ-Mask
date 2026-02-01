@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e7300b53090c62c4cb5668c48ab0810d, type: 3}
-  m_Name: WeakMob
+  m_Name: NormalMob
   m_EditorClassIdentifier: Assembly-CSharp::EnemySO
-  name: WeakMob
-  mask: 0
-  health: 20
-  maxHealth: 20
+  name: NormalMob
+  mask: 2
+  health: 30
+  maxHealth: 30
   shield: 0
-  damage: 2
-  healPower: 3
-  shieldPower: 2
-  pattern: 000000000000000001000000
+  damage: 3
+  healPower: 4
+  shieldPower: 3
+  pattern: 00000000000000000200000001000000
   hasSpecial: 0

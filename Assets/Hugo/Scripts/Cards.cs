@@ -1,9 +1,10 @@
 using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Cards : MonoBehaviour
+public class CardData : MonoBehaviour
 {
     public CardSO card;
     public AllMaskSO allMask;
@@ -18,6 +19,8 @@ public class Cards : MonoBehaviour
     [HideInInspector] public int heal;
     [HideInInspector] public int shield;
     [HideInInspector] public CardEffect effect;
+
+    [HideInInspector] public List<CardData> saveHand;
 
     public void ChangeCardMask()
     {

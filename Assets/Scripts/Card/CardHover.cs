@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class CardHover : MonoBehaviour,
     IPointerEnterHandler,
@@ -17,6 +18,10 @@ public class CardHover : MonoBehaviour,
     Vector3 baseScale;
     Vector3 targetScale;
 
+    private TextMeshProUGUI costText;
+    private TextMeshProUGUI nameText;
+    private TextMeshProUGUI descriptionText;
+
     void Awake()
     {
         Image img = GetComponentInChildren<Image>(true);
@@ -27,6 +32,10 @@ public class CardHover : MonoBehaviour,
 
         baseScale = rect.localScale;
         targetScale = baseScale;
+
+        costText = GameObject.FindGameObjectWithTag("CostText").GetComponent<TextMeshProUGUI>();
+        nameText = GameObject.FindGameObjectWithTag("NameText").GetComponent<TextMeshProUGUI>();
+        descriptionText = GameObject.FindGameObjectWithTag("DescriptionText").GetComponent<TextMeshProUGUI>();
     }
 
     void Update()
@@ -49,12 +58,21 @@ public class CardHover : MonoBehaviour,
         targetPos = basePos + Vector2.up * hoverLift;
         targetScale = baseScale * hoverScale;
 
-        Debug.Log(gameObject.name + " hover!");
+        Debug.Log(gameObject.GetComponent<CardData>().currentName + " is hover!");
+        Debug.Log(gameObject.GetComponent<CardData>().currentDescription + " is hover!");
+
+        costText.text = "Cost : " + gameObject.GetComponent<CardData>().cost.ToString();
+        nameText.text = gameObject.GetComponent<CardData>().currentName.ToString();
+        descriptionText.text = gameObject.GetComponent<CardData>().currentDescription;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         targetPos = basePos;
         targetScale = baseScale;
+
+        costText.text = "";
+        nameText.text = "";
+        descriptionText.text = "";
     }
 }

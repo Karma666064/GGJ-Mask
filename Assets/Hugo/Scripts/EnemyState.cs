@@ -1,11 +1,20 @@
 using System;
+using System.Linq;
 using System.Threading;
 using JetBrains.Annotations;
+using TMPro;
+using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyState : MonoBehaviour
 {
-    public EnemySO statSO;
+    public EnemySO[] statSO;
+    private EnemySO currentSO;
+
+    public static Action NextLevel;
+
+    private int level = 0;
     public int health;
     public int maxHealth;
     public int shield;
@@ -19,27 +28,48 @@ public class EnemyState : MonoBehaviour
     public EnemyAttack previewAttack;
     public NegativeEffect debuff = NegativeEffect.none;
 
+    public int debuffRemainingTurn = 0;
+
     public bool hasSpecial;
 
     private int countAttack = 0;
     private int rand = 0;
+
+    public TextMeshProUGUI hpBar;
+    public TextMeshProUGUI shBar;
+    public Image hpJauge;
     void Awake()
     {
-        InitStat();
+        ChangeSO();
+    }
+
+    public void ChangeSO()
+    {
+        if (level <= statSO.Length) {
+            currentSO = statSO[level];
+            InitStat();
+            UpdateUI();
+        } else
+        {
+            Debug.Log("YOU WIINN");
+        }
     }
 
     public void InitStat()
     {
-        health = statSO.health;
-        shield = statSO.shield;
-        damage = statSO.damage;
-        name = statSO.name;
-        pattern = statSO.pattern;
-        mask = statSO.mask;
-        hasSpecial = statSO.hasSpecial;
-        healPower = statSO.healPower;
-        shieldPower = statSO.shieldPower;
-        maxHealth = statSO.maxHealth;
+        health = currentSO.health;
+        shield = currentSO.shield;
+        damage = currentSO.damage;
+        name = currentSO.name;
+        pattern = currentSO.pattern;
+        mask = currentSO.mask;
+        hasSpecial = currentSO.hasSpecial;
+        healPower = currentSO.healPower;
+        shieldPower = currentSO.shieldPower;
+        maxHealth = currentSO.maxHealth;
+
+        hpBar.text = "HP: " + maxHealth.ToString();
+        shBar.text = "SH: " + shield.ToString();
     }
 
     public void ChoosePreviewAttack()
@@ -64,8 +94,12 @@ public class EnemyState : MonoBehaviour
     }
     public void Heal()
     {
-        health += healPower;
+        if (debuff == NegativeEffect.freeze)
+             health += healPower / 2;
+        else 
+            health += healPower;
         health = Math.Clamp(health, -1, maxHealth);
+        UpdateUI();
     }
 
     public void PreviewNextMask()
@@ -96,6 +130,32 @@ public class EnemyState : MonoBehaviour
         }
     }
 
+    public void TakeDamage(int damage)
+    {
+        Debug.Log("DAMAGE DONE" + damage);
+        Debug.Log("HEATH" + health);
+
+        int remainingDamage = damage - shield;
+        remainingDamage = Math.Clamp(remainingDamage, 0, 999);
+
+        shield -= damage;
+        shield = Math.Clamp(shield, 0, 999);
+        health -= remainingDamage;
+        
+        UpdateUI();
+        if (health <= 0)
+            Die();
+
+        health = Math.Clamp(health, 0, 999);
+    }
+
+    public void UpdateUI()
+    {
+        hpBar.text = "HP: " + health.ToString();
+        shBar.text = "SP: " + shield.ToString();
+        hpJauge.fillAmount = (float)health / (float)maxHealth;
+    }
+
     public void ChangeState()
     {
        mask = nextMask;
@@ -104,7 +164,10 @@ public class EnemyState : MonoBehaviour
 
     public void Shield()
     {
-        shield += shieldPower;
+        if (debuff == NegativeEffect.freeze)
+            health += shieldPower / 2;
+        else 
+            shield += shieldPower;
     }
 
     public void Special()
@@ -115,7 +178,8 @@ public class EnemyState : MonoBehaviour
 
     public void Die()
     {
-        Debug.Log("Enemy Died");
+        level++;
+        NextLevel?.Invoke();
     }
 
     public void DEBUGInfoEnnemy()
