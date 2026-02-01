@@ -16,9 +16,9 @@ MonoBehaviour:
   mask: 3
   currentSprite: {fileID: 0}
   allSprites:
-  - {fileID: 2304983787539082712, guid: a55785d0c0f545741bf26fbc9b195034, type: 3}
+  - {fileID: 1119077979509857012, guid: cfb27401dba1c7d429b2745df74c86cf, type: 3}
   - {fileID: -193560954394254058, guid: 9cd70351bda1939468720346dc8a2a66, type: 3}
-  - {fileID: -3521458803489493168, guid: 8c2ca4d6a2a7cce419a1085cbc7d09d8, type: 3}
+  - {fileID: 1737368665762231449, guid: c5ee3a5607940f140a8b25cdd5cb068c, type: 3}
   allNames:
   - Shield Angry
   - Shield Joy

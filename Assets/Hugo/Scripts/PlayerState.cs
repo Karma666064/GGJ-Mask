@@ -23,6 +23,11 @@ public class PlayerState : MonoBehaviour
     public List<CardData> decks;
     public List<CardData> discard;
 
+    public List<Sprite> allMasksSprites;
+
+    public Image uiMask;
+    public Image uiMaskShadow;
+
     public CardsCreator cardsCreator;
 
     public GameObject HandZone;
@@ -32,7 +37,11 @@ public class PlayerState : MonoBehaviour
     public TextMeshProUGUI apBar;
     public Image hpJauge;
 
+    public Sprite currentMaskSprite;
+
     public GameObject deckPool;
+
+    public TextMeshProUGUI cardInDeck;
 
     public void Awake()
     {
@@ -59,6 +68,8 @@ public class PlayerState : MonoBehaviour
         {
             if (decks.Count != 0) {
                 ChooseRandomCardsInDeck();
+                cardInDeck.text = decks.Count.ToString() + "/18 CARDS";
+                AudioManager.Instance.PlaySFX(AudioManager.CodeSFX.draw);
                 yield return new WaitForSeconds(0.5f);
             }
             else
@@ -124,6 +135,9 @@ public class PlayerState : MonoBehaviour
             item.mask = playerMask;
             item.ChangeCardMask();
         }
+        currentMaskSprite = allMasksSprites[(int)playerMask];
+        uiMask.sprite = currentMaskSprite;
+        uiMaskShadow.sprite = currentMaskSprite;
     }
 
     public void DEBUGPrintHand()
@@ -160,6 +174,7 @@ public class PlayerState : MonoBehaviour
             Die();
 
         health = Math.Clamp(health, 0, 999);
+        AudioManager.Instance.PlaySFX(AudioManager.CodeSFX.hurt);
     }
 
     public MaskState FindNewMask()
@@ -185,11 +200,11 @@ public class PlayerState : MonoBehaviour
         if (playerMask == MaskState.joy)
         {
             if (rand == 0)
-                return MaskState.joy;
+                return MaskState.sad;
             else
                 return MaskState.angry;
         }
-
+        
         return playerMask;
     }
 

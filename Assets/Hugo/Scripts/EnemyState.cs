@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq;
 using System.Threading;
 using JetBrains.Annotations;
@@ -35,9 +36,21 @@ public class EnemyState : MonoBehaviour
     private int countAttack = 0;
     private int rand = 0;
 
+    [HideInInspector] public Sprite currentMaskSprite;
+    public Sprite[] allMasksSprites;
+
+    public Image uiMask;
+    public Image uiMaskShadow;
+
     public TextMeshProUGUI hpBar;
     public TextMeshProUGUI shBar;
     public Image hpJauge;
+
+    public Sprite attackPreview;
+    public Sprite shieldPreview;
+    public Sprite healPreview;
+
+    public Image previewImage;
     void Awake()
     {
         ChangeSO();
@@ -45,7 +58,7 @@ public class EnemyState : MonoBehaviour
 
     public void ChangeSO()
     {
-        if (level <= statSO.Length) {
+        if (level < statSO.Length) {
             currentSO = statSO[level];
             InitStat();
             UpdateUI();
@@ -67,6 +80,9 @@ public class EnemyState : MonoBehaviour
         healPower = currentSO.healPower;
         shieldPower = currentSO.shieldPower;
         maxHealth = currentSO.maxHealth;
+
+        currentMaskSprite = allMasksSprites[(int)mask];
+        uiMask.sprite = currentMaskSprite;
 
         hpBar.text = "HP: " + maxHealth.ToString();
         shBar.text = "SH: " + shield.ToString();
@@ -91,9 +107,31 @@ public class EnemyState : MonoBehaviour
             Debug.Log("The next mask : " + nextMask + " !");
         }
         Debug.Log("Preview Attack is : " + previewAttack);
+        ChangePreviewImage();
     }
+
+    public void ChangePreviewImage()
+    {
+        switch (previewAttack)
+        {
+            case EnemyAttack.Attack:
+                previewImage.sprite = attackPreview;
+                break;
+            case EnemyAttack.Heal:
+                previewImage.sprite = healPreview;
+                break;
+            case EnemyAttack.Shield:
+                previewImage.sprite = shieldPreview;
+                break;
+            default:
+                break;
+        }
+        
+    }
+
     public void Heal()
     {
+        AudioManager.Instance.PlaySFX(AudioManager.CodeSFX.heal);
         if (debuff == NegativeEffect.freeze)
              health += healPower / 2;
         else 
@@ -132,6 +170,7 @@ public class EnemyState : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        AudioManager.Instance.PlaySFX(AudioManager.CodeSFX.hurt);
         Debug.Log("DAMAGE DONE" + damage);
         Debug.Log("HEATH" + health);
 
@@ -158,12 +197,17 @@ public class EnemyState : MonoBehaviour
 
     public void ChangeState()
     {
-       mask = nextMask;
+        mask = nextMask;
+
+        currentMaskSprite = allMasksSprites[(int)mask];
+        uiMask.sprite = currentMaskSprite;
+        uiMaskShadow.sprite = currentMaskSprite;
     }
 
 
     public void Shield()
     {
+        AudioManager.Instance.PlaySFX(AudioManager.CodeSFX.shield);
         if (debuff == NegativeEffect.freeze)
             health += shieldPower / 2;
         else 

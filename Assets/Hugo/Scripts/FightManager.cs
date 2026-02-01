@@ -114,6 +114,12 @@ public class FightManager : MonoBehaviour
             else
                 player.actionPoint -= player.hand[numberCardDataSelected].cost;
 
+            if (player.hand[numberCardDataSelected].heal != 0)
+                AudioManager.Instance.PlaySFX(AudioManager.CodeSFX.heal);
+            
+            if (player.hand[numberCardDataSelected].shield != 0)
+                AudioManager.Instance.PlaySFX(AudioManager.CodeSFX.shield);
+
             player.health += player.hand[numberCardDataSelected].heal;
             player.health = Math.Clamp(player.health, 0, player.maxHealth);
             
