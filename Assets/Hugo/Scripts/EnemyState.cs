@@ -1,12 +1,8 @@
 using System;
-using System.Collections;
-using System.Linq;
-using System.Threading;
-using JetBrains.Annotations;
 using TMPro;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class EnemyState : MonoBehaviour
 {
@@ -49,8 +45,8 @@ public class EnemyState : MonoBehaviour
     public Sprite attackPreview;
     public Sprite shieldPreview;
     public Sprite healPreview;
-
     public Image previewImage;
+
     void Awake()
     {
         ChangeSO();
@@ -65,6 +61,7 @@ public class EnemyState : MonoBehaviour
         } else
         {
             Debug.Log("YOU WIINN");
+            SceneManager.LoadScene("Victory");
         }
     }
 

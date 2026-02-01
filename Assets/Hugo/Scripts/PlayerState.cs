@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using UnityEngine.SceneManagement;
 using UnityEngine.Rendering.UnifiedRayTracing;
 
 public class PlayerState : MonoBehaviour
@@ -68,7 +69,7 @@ public class PlayerState : MonoBehaviour
         {
             if (decks.Count != 0) {
                 ChooseRandomCardsInDeck();
-                cardInDeck.text = decks.Count.ToString() + "/18 CARDS";
+                cardInDeck.text = decks.Count.ToString() + "/28 CARDS";
                 AudioManager.Instance.PlaySFX(AudioManager.CodeSFX.draw);
                 yield return new WaitForSeconds(0.5f);
             }
@@ -150,6 +151,7 @@ public class PlayerState : MonoBehaviour
 
     public void Die()
     {
+        SceneManager.LoadScene("MenuScene");
         Debug.Log("Player is DEAD");
     }
 

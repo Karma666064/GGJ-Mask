@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class MenuController : MonoBehaviour
 {
@@ -9,7 +10,25 @@ public class MenuController : MonoBehaviour
 
     public void ButtonPlay()
     {
-         SceneManager.LoadScene("GameScene");
+        StartCoroutine(WaitForTransition());
+        
+    }
+
+    public void ButtonMenu()
+    {
+       StartCoroutine(WaitForTransitionMenu()); 
+    }
+
+    public IEnumerator WaitForTransition()
+    { 
+        yield return StartCoroutine(AudioManager.Instance.AnimeTransition());
+        SceneManager.LoadScene("GameSceneFinal");
+    }
+
+    public IEnumerator WaitForTransitionMenu()
+    { 
+        yield return StartCoroutine(AudioManager.Instance.AnimeTransition());
+        SceneManager.LoadScene("MenuScene");
     }
 
     public void ButtonSettings()

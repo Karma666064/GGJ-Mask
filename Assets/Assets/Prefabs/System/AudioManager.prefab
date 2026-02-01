@@ -50,19 +50,13 @@ MonoBehaviour:
   - {fileID: 7808035554936863257}
   - {fileID: 2901938232768514104}
   clipsOST:
-  - {fileID: 8300000, guid: 4bbd705bcda80b141935997f472b3e4a, type: 3}
-  - {fileID: 8300000, guid: e4bec3fc39eca04458c39ff1c3d4471a, type: 3}
-  - {fileID: 8300000, guid: 3dc7ad5fde7884a48bda8349cc3318e7, type: 3}
-  - {fileID: 8300000, guid: 5cb75f0171195f045b50975f78317553, type: 3}
+  - {fileID: 8300000, guid: 216220d24c7158642bd0d350f42572c6, type: 3}
   clipsSFX:
-  - {fileID: 8300000, guid: 898909ff83c515140a2665277dcb4a64, type: 3}
-  - {fileID: 8300000, guid: 6ec773effa77cc14cb8967618892ff66, type: 3}
-  - {fileID: 8300000, guid: 3c10ad48474ea6a4ebcb5ccc74d9596b, type: 3}
-  - {fileID: 8300000, guid: a7769a30d2449474ca8faf4f8fc65863, type: 3}
-  - {fileID: 8300000, guid: 7005712145c15b842a59e91fa298c789, type: 3}
-  - {fileID: 8300000, guid: 850dfec0eebb1f24aa313c23a3af4143, type: 3}
-  - {fileID: 8300000, guid: efc90adf0d4340a48be3169a80884081, type: 3}
-  - {fileID: 8300000, guid: de3d403271df0964e877f3219c9e34e9, type: 3}
+  - {fileID: 8300000, guid: 73e65cdcf13c3714bb1e9bc09b864de0, type: 3}
+  - {fileID: 8300000, guid: da5244692a829e34fbab8bbfe7ea0314, type: 3}
+  - {fileID: 8300000, guid: 4eb7494685c0d19488b0c5f3172e61b5, type: 3}
+  - {fileID: 8300000, guid: 6f5db114d3ed2354e90296dad2c88083, type: 3}
+  - {fileID: 8300000, guid: 63ab8effe4f062d4f8bdef25f90ab26b, type: 3}
 --- !u!82 &7808035554936863257
 AudioSource:
   m_ObjectHideFlags: 0
@@ -76,7 +70,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -173,7 +167,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.75
   m_Pitch: 1
   Loop: 0
   Mute: 0

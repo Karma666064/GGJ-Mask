@@ -1,8 +1,12 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
+    public static Action PlayTransition;
+
     public enum CodeOST
     {
         menu,
@@ -13,7 +17,8 @@ public class AudioManager : MonoBehaviour
         draw,
         hurt,
         shield,
-        heal
+        heal,
+        curtain
     }
 
     void Awake()
@@ -37,6 +42,21 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource[] sources;
     [SerializeField] private AudioClip[] clipsOST;
     [SerializeField] private AudioClip[] clipsSFX;
+
+    public void Transition()
+    {
+        PlayTransition?.Invoke();
+    }
+
+    public IEnumerator AnimeTransition()
+    {
+        Transition();
+        PlaySFX(CodeSFX.curtain);
+        yield return new WaitForSeconds(2f);
+        PlaySFX(CodeSFX.curtain);
+        Transition();
+        yield return new WaitForSeconds(0.2f);
+    }
 
     public void PlayMusic(CodeOST _code)
     {

@@ -25,6 +25,12 @@ public class FightManager : MonoBehaviour
     public UnityEngine.UI.Button renewButton;
 
     public TextMeshProUGUI MaskTimer;
+
+    public Sprite iceDebuff;
+    public Sprite fireDebuff;
+    public Sprite noneDebuff;
+
+    public UnityEngine.UI.Image debuffImage;
     void Start()
     {
         player = GameObject.FindWithTag("Player").GetComponent<PlayerState>();
@@ -49,6 +55,14 @@ public class FightManager : MonoBehaviour
 
     public void ChangeLevel()
     {
+        StartCoroutine(WaitTransition()); 
+    }
+
+    public IEnumerator WaitTransition()
+    {
+        yield return StartCoroutine(AudioManager.Instance.AnimeTransition());
+
+        debuffImage.sprite = noneDebuff;
         ForceRenewDeck();
         player.PlayerGrowth();
 
@@ -215,8 +229,10 @@ public class FightManager : MonoBehaviour
         }
 
         enemy.debuffRemainingTurn--;
-        if (enemy.debuffRemainingTurn <= 0)
+        if (enemy.debuffRemainingTurn <= 0) {
             enemy.debuff = NegativeEffect.none;
+            debuffImage.sprite = noneDebuff;
+        }
     }
 
     public void TriggerRandomMaskChange()
@@ -236,10 +252,14 @@ public class FightManager : MonoBehaviour
     {
        if (card.type == CardType.attack) 
         {
-            if (player.playerMask == MaskState.angry)
+            if (player.playerMask == MaskState.angry) {
                 enemy.debuff = NegativeEffect.burn;
-            if (player.playerMask == MaskState.sad)
+                debuffImage.sprite = fireDebuff;
+            }
+            if (player.playerMask == MaskState.sad) {
                 enemy.debuff = NegativeEffect.freeze;
+                debuffImage.sprite = iceDebuff;
+            }
             enemy.debuffRemainingTurn = 2;
         } 
     }

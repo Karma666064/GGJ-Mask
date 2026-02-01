@@ -22,19 +22,30 @@ public class TransitionPanel : MonoBehaviour
     bool isClosed;
     bool isTransitioning;
 
+    void Start()
+    {
+        AudioManager.PlayTransition += PlayTransition;
+    }
+
+    void OnDisable()
+    {
+        AudioManager.PlayTransition -= PlayTransition;
+    }
+
     private void Update()
     {
-        if (!canTransition) return;
+       /*µ if (!canTransition) return;
 
         PlayTransition();
 
-        canTransition = false;
+        canTransition = false;*/
     }
+
+
 
     public void PlayTransition()
     {
         if (isTransitioning) return;
-
         StartCoroutine(TransitionRoutine());
     }
 
