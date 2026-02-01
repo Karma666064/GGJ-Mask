@@ -1,12 +1,13 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "Cards", menuName = "Scriptable Objects/CreateCards")]
 public class CardSO: ScriptableObject
 { 
     public CardType type;
     public MaskState mask;
-    public GameObject currentSprite;
-    public GameObject allSprites;
+    public Sprite currentSprite;
+    public Sprite[] allSprites;
     public string[] allNames;
     public string currentName;
     public string currentDescription;

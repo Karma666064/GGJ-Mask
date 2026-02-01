@@ -3254,7 +3254,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b57d948f04223c540a2e0f1548cf2a5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyState
-  statSO: {fileID: 11400000, guid: 5586fec6ba16c2642a0a5967af994a99, type: 2}
+  statSO:
+  - {fileID: 11400000, guid: 5586fec6ba16c2642a0a5967af994a99, type: 2}
+  - {fileID: 11400000, guid: e08a18e8d265df44a90409ec9dd32452, type: 2}
   health: 10
   maxHealth: 10
   shield: 0

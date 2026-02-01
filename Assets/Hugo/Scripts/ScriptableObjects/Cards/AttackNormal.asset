@@ -15,7 +15,10 @@ MonoBehaviour:
   type: 0
   mask: 3
   currentSprite: {fileID: 0}
-  allSprites: {fileID: 0}
+  allSprites:
+  - {fileID: 4893926689513596577, guid: 46db7af17d3ae2243a288888fb7ff6a2, type: 3}
+  - {fileID: 5164483708148702235, guid: a29bc4f5f983d67428f05502b9d3c78e, type: 3}
+  - {fileID: -7625745245592036126, guid: 0706db2048a1479479702c3be1e721eb, type: 3}
   allNames:
   - Attack Angry I
   - Attack Joy I

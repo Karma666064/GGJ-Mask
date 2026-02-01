@@ -15,7 +15,10 @@ MonoBehaviour:
   type: 1
   mask: 3
   currentSprite: {fileID: 0}
-  allSprites: {fileID: 0}
+  allSprites:
+  - {fileID: 4957004875974080185, guid: 3ddc258abd33a554aa5b996ac49747ab, type: 3}
+  - {fileID: 2903848411162822477, guid: 7f20a817c30fa5440a73141b90b3229f, type: 3}
+  - {fileID: 2737636851806710601, guid: 46e28ffaa479639419c240e17aadb399, type: 3}
   allNames:
   - Heal Angry
   - Heal Joy

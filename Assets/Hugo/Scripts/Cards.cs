@@ -13,7 +13,7 @@ public class CardData : MonoBehaviour
     [HideInInspector] public int cost;
     [HideInInspector] public string currentDescription;
     [HideInInspector] public MaskState mask;
-    [HideInInspector] public GameObject currentSprite;
+    [HideInInspector] public Sprite currentSprite;
     [HideInInspector] public string currentName;
     [HideInInspector] public int damage;
     [HideInInspector] public int heal;
@@ -58,11 +58,34 @@ public class CardData : MonoBehaviour
         heal = card.heal * mask.healMultiplier + lifeSteal;
         shield = card.shield * mask.shieldMultiplier;
         currentName = card.allNames[(int)mask.maskState];
+        
+        ChangeSprite(mask.maskState);
 
         if (card.currentEffect != CardEffect.none)
             ChangeEffect(mask.maskState);
         else
             effect = card.currentEffect;
+    }
+
+    public void ChangeSprite(MaskState _state)
+    {
+        switch (_state)
+        {
+            case MaskState.angry:
+                currentSprite = card.allSprites[(int)MaskState.angry];
+                break;
+            case MaskState.joy:
+                currentSprite = card.allSprites[(int)MaskState.joy];
+                break;
+            case MaskState.sad:
+                currentSprite = card.allSprites[(int)MaskState.sad];
+                break;
+            default:
+                break;
+        }
+
+        this.gameObject.GetComponentInChildren<Image>().sprite = currentSprite;
+    
     }
 
     public void ChangeEffect(MaskState _state)

@@ -15,7 +15,10 @@ MonoBehaviour:
   type: 1
   mask: 3
   currentSprite: {fileID: 0}
-  allSprites: {fileID: 0}
+  allSprites:
+  - {fileID: 2042159795878579605, guid: 12572530d32d75b44823c7c2bdcd1087, type: 3}
+  - {fileID: 2119280622987085956, guid: 9b41f50863d74ce4581ef3eac6f52181, type: 3}
+  - {fileID: 7284782998366518639, guid: d2a67a88c162bb84ea53239c596c1498, type: 3}
   allNames:
   - Shield Angry I
   - Shield Joy I
